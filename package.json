@@ -1,0 +1,18 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "Student Management API-v1",
+  "license": "ISC",
+  "author": "Sairam S",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
