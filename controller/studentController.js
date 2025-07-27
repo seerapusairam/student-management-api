@@ -1,22 +1,22 @@
-const data = require('../data/students')
-let students = data.students
+const model = require('../Model/schema')
 
-const getStudents = (req,res)=>{
+const getStudents = async (req,res)=>{
+    const task = await model.find()
     res.json({
         status:true,
-        message:students
+        data:task
     })
 }
 
-const getStudentById = (req,res)=>{
+const getStudentById = async (req,res)=>{
     const {id} = req.params
 
-    const find = students.find((s)=> s.id === Number(id))
+    const find = await model.findById(id)
 
     if(find != null){
         res.json({
             status:true,
-            message:find
+            data:find
         })
 
     }else{
@@ -27,91 +27,46 @@ const getStudentById = (req,res)=>{
     }
 }
 
-const postStudents = (req,res)=>{
-    const {name,grade} = req.body
-
-    if(name){
-        if(grade){
-            const len = students.length
-            const newStudent = {
-                id: len + 1,
-                name,
-                grade
-            }
-            students.push(newStudent)
-
-            res.status(201).json({
-                status:true,
-                data : students
-            })
-        }else{
-            res.status(400).json({
-                status:false,
-                message:"Please provided grade in the body"
-            })
-        }
-    }else{
-        res.status(400).json({
-            status:false,
-            message:"Please provided name in the body"
-        })
-    }
-}
-
-const updateStudentById = (req,res)=>{
-    const {id} = req.params
-    const {name,grade} = req.body
-
-    const user = students.find((s) => s.id === Number(id))
-
-    if(user){
-            if(name){
-                if(grade){
-                    user.name = name
-                    user.grade = grade
-                    res.json({
-                        status:true,
-                        message: user
-                    })
-                }else{
-                    res.status(400).json({
-                        status:false,
-                        message:"Please provided grade in the body"
-                    })
-                }
-            }else{
-                res.status(400).json({
-                    status:false,
-                    message:"Please provided name in the body"
-                })
-            }
-    }else{
-        res.status(404).json({
-            status:false,
-            message:"ID not found"
-            })
-    } 
-}
-
-const deleteStudentById = (req,res)=>{
-    const {id} = req.params
-
-    const findStudent = students.find((s) => s.id === Number(id))
-
-    if(findStudent){
-        students = students.filter((s) => s.id !== Number(id))
-
+const postStudents = async (req,res)=>{
+    const {name:taskName,grade:taskGrade} = req.body
+    try {
+        const task = await model.create({name:taskName,grade:taskGrade})
         res.status(201).json({
             status:true,
-            message : students
+             data :{task}
         })
-    }else{
-        res.status(404).json({
-            status:false,
-            message:"Id not found"
-        })
+    } catch (error) {
+        res.json(error)
     }
+}
 
+const updateStudentById = async (req,res)=>{
+    const {id} = req.params
+    try {
+        const task = await model.findOneAndUpdate({ _id: id },req.body,{new:true})
+        if (!task) {
+            return res.status(404).json({ status: false, message: "Student not found" });
+        }
+        res.json({
+            status:true,
+            data : task
+        }) 
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+const deleteStudentById = async (req,res)=>{
+    const {id} = req.params
+    try {
+        const task = await model.findByIdAndDelete(id)
+        res.status(201).json({
+            status:true,
+            data : task
+        }) 
+    } catch (error) {
+        res.json(error)
+    }
 }
 
 module.exports = {
