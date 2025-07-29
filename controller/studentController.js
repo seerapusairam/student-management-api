@@ -1,4 +1,6 @@
 const model = require('../Model/schema')
+const { createCustomError } = require('../Error/customError')
+const asyncWapper = require('../middleware/asyncWapper')
 
 const getStudents = async (req,res)=>{
     const task = await model.find()
@@ -8,66 +10,58 @@ const getStudents = async (req,res)=>{
     })
 }
 
-const getStudentById = async (req,res)=>{
+const getStudentById = asyncWapper(async (req,res,next)=>{
     const {id} = req.params
 
     const find = await model.findById(id)
 
-    if(find != null){
+    if(find == null){
+        return next(createCustomError("Id not found",404))
+    }
         res.json({
             status:true,
             data:find
         })
+})
 
-    }else{
-        res.status(404).json({
-            status:false,
-            message:"ID Not Found"
-        })
-    }
-}
-
-const postStudents = async (req,res)=>{
+const postStudents = asyncWapper(async (req,res,next)=>{
     const {name:taskName,grade:taskGrade} = req.body
-    try {
-        const task = await model.create({name:taskName,grade:taskGrade})
-        res.status(201).json({
-            status:true,
-             data :{task}
-        })
-    } catch (error) {
-        res.json(error)
-    }
-}
 
-const updateStudentById = async (req,res)=>{
-    const {id} = req.params
-    try {
-        const task = await model.findOneAndUpdate({ _id: id },req.body,{new:true})
-        if (!task) {
-            return res.status(404).json({ status: false, message: "Student not found" });
-        }
-        res.json({
-            status:true,
-            data : task
-        }) 
-    } catch (error) {
-        res.json(error)
+    if(!taskName || !taskGrade){
+        return next(createCustomError("Please provide data to post",404))
     }
-}
+    const task = await model.create({name:taskName,grade:taskGrade})
+    res.status(201).json({
+        status:true,
+        data :{task}
+    })
+})
 
-const deleteStudentById = async (req,res)=>{
+const updateStudentById = asyncWapper(async (req,res,next)=>{
     const {id} = req.params
-    try {
-        const task = await model.findByIdAndDelete(id)
-        res.status(201).json({
-            status:true,
-            data : task
-        }) 
-    } catch (error) {
-        res.json(error)
+    const task = await model.findOneAndUpdate({ _id: id },req.body,{new:true})
+    if (!task) {
+        return next(createCustomError("Student not found",404))
     }
-}
+    res.json({
+        status:true,
+        data : task
+    })     
+
+})
+
+const deleteStudentById = asyncWapper(async (req,res,next)=>{
+    const {id} = req.params
+    const task = await model.findByIdAndDelete(id)
+    if (!task) {
+        return next(createCustomError("Student not found",404))
+    }
+    res.status(201).json({
+        status:true,
+        data : task
+    }) 
+
+})
 
 module.exports = {
     getStudents,
