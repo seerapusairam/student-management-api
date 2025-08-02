@@ -7,14 +7,15 @@ const errorHandling = require('./middleware/errorHandling')
 
 const studentRouter = require('./router/studentRouter')
 
-//middleware to parse json body
+//middleware to parse JSON bodies
 app.use(express.json())
 
-
 app.use('/api/students',studentRouter)
-
+// Middleware for centralized error handling
+// This should be the last middleware in the stack
 app.use(errorHandling)
-
+// Start the server and connect to the database
+// The start function initializes the database connection and starts the server
 const start = async()=>{
     try{
         await db(process.env.URL)

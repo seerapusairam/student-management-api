@@ -1,10 +1,15 @@
-const customError = require('../Error/customError');
-const {StatusCodes} = require('http-status-codes')
+const customError = require('../Error/customError'); // Import custom error class
+const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
+
+// Express middleware for centralized error handling
 const errorHandling = (err,req,res,next)=>{
     if(err instanceof customError){
+        // If error is a custom error, use its status code and message
         return res.status(err.statusCode).json({message:err.message})
     }else{
+        // For all other errors, return generic server error
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"something went wrong"})
     }
 }
-module.exports = errorHandling;
+
+module.exports = errorHandling; // Export
