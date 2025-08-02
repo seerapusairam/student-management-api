@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 require('dotenv').config()
+require('express-async-errors')
 const db = require('./Database/connect')
 const errorHandling = require('./middleware/errorHandling')
 
