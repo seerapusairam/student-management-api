@@ -1,6 +1,7 @@
 const model = require('../Model/schema') // Import the student schema/model
-const customError = require('../Error/customError') // Import custom error handler
 const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
+const badRequestError = require('../Error/badRequestError')
+const notFoundError = require('../Error/notFoundError')
 
 // Controller to get students with optional filtering, sorting, and pagination
 const getStudents = async (req,res)=>{
@@ -22,7 +23,8 @@ const getStudents = async (req,res)=>{
     const task = await result // Execute query
     res.json({
         status:true,
-        data:task
+        data:task,
+        count:task.length
     })
 }
 
@@ -34,7 +36,7 @@ const getStudentById = async (req,res,next)=>{
 
     if(find == null){
         // If not found, send custom error
-        return next(new customError("Provided data was not there", StatusCodes.NOT_FOUND));
+        throw new notFoundError("Provided data was not there")
     }
     res.json({
         status:true,
@@ -48,7 +50,7 @@ const postStudents = async (req,res,next)=>{
 
     if(!taskName || !taskGrade){
         // If missing data, send custom error
-        return next(new customError("Please provide data to post",StatusCodes.NOT_FOUND))
+        throw new badRequestError("Please provide the request body data")
     }
     const task = await model.create({name:taskName,grade:taskGrade}) // Create new student
     res.status(201).json({
@@ -63,7 +65,7 @@ const updateStudentById = async (req,res,next)=>{
     const task = await model.findOneAndUpdate({ _id: id },req.body,{new:true}) // Update student
     if (!task) {
         // If not found, send custom error
-        return next(new customError("Student not found",StatusCodes.NOT_FOUND))
+        throw new notFoundError("Student not found")
     }
     res.json({
         status:true,
@@ -77,7 +79,7 @@ const deleteStudentById = async (req,res,next)=>{
     const task = await model.findByIdAndDelete(id) // Delete student
     if (!task) {
         // If not found, send custom error
-        return next(new customError("Student not found",StatusCodes.NOT_FOUND))
+        throw new notFoundError("Student not found")
     }
     res.status(201).json({
         status:true,

@@ -4,6 +4,7 @@ require('dotenv').config()
 require('express-async-errors')
 const db = require('./Database/connect')
 const errorHandling = require('./middleware/errorHandling')
+const notFoundMiddleware = require('./middleware/notFound')
 
 const studentRouter = require('./router/studentRouter')
 
@@ -14,6 +15,7 @@ app.use('/api/students',studentRouter)
 // Middleware for centralized error handling
 // This should be the last middleware in the stack
 app.use(errorHandling)
+app.use(notFoundMiddleware)
 // Start the server and connect to the database
 // The start function initializes the database connection and starts the server
 const start = async()=>{
