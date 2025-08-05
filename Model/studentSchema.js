@@ -19,7 +19,7 @@ const studentSchema = mongoose.Schema({
         type:String,
         default:'D'
     }
-})
+},{timestamps:true})
 // Create a model from the schema
 // A model is a class that allows us to interact with the collection in MongoDB
 const model = mongoose.model('Student',studentSchema)

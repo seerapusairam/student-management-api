@@ -1,4 +1,4 @@
-const model = require('../Model/schema') // Import the student schema/model
+const model = require('../Model/studentSchema') // Import the student schema/model
 const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
 const badRequestError = require('../Error/badRequestError')
 const notFoundError = require('../Error/notFoundError')
