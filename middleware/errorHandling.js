@@ -6,7 +6,7 @@ const errorHandling = (err,req,res,next)=>{
     console.log(err)
     if(err instanceof customError){
         // If error is a custom error, use its status code and message
-        return res.status(err.statusCode).json({message:err})
+        return res.status(err.statusCode).json({message:err.message})
     }else{
         // For all other errors, return generic server error
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:err})

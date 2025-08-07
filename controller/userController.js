@@ -21,7 +21,9 @@ const postLogin = async (req,res)=>{
         throw new unauthenticatedError("Invalid Credentials")
     }
 
-    res.status(StatusCodes.OK).json({user})
+    const token = await user.createJWT()
+
+    res.status(StatusCodes.OK).json({user:{user:user.name},token})
 
 }
 
@@ -29,7 +31,9 @@ const postRegister = async (req,res)=>{
 
     const user = await model.create({...req.body})
 
-    res.status(StatusCodes.CREATED).json({user})
+    const token = await user.createJWT()
+
+    res.status(StatusCodes.CREATED).json({user:{user:user.name},token})
 }
 
 module.exports = {
