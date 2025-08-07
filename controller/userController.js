@@ -1,11 +1,28 @@
 const model = require('../Model/userSchema') 
 const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
-const badRequestError = require('../Error/badRequestError')
-const notFoundError = require('../Error/notFoundError')
+const {badRequestError,unauthenticatedError} = require('../Error/allErrors')
 
 
 const postLogin = async (req,res)=>{
-    res.json({msg:"in login"})
+    const {email,password} = req.body
+    if(!email || !password){
+        throw new badRequestError("Please provide the data in body param")
+    }
+
+    const user = await model.findOne({email})
+
+    if(!user){
+        throw new unauthenticatedError("Invalid Credentials")
+    }
+
+    const checkPass = await user.checkPassword(password)
+
+    if(!checkPass){
+        throw new unauthenticatedError("Invalid Credentials")
+    }
+
+    res.status(StatusCodes.OK).json({user})
+
 }
 
 const postRegister = async (req,res)=>{
