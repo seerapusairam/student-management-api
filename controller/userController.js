@@ -9,7 +9,10 @@ const postLogin = async (req,res)=>{
 }
 
 const postRegister = async (req,res)=>{
-    res.json({msg:"in Register"})
+
+    const user = await model.create({...req.body})
+
+    res.status(StatusCodes.CREATED).json({user})
 }
 
 module.exports = {
