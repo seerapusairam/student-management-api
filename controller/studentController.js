@@ -25,18 +25,20 @@ const getStudents = async (req,res)=>{
 
 // Controller to get a student by ID
 const getStudentById = async (req,res)=>{
-    const {id} = req.params // Extract ID from route params
-
-    const find = await model.findById(id) // Find student by ID
+    const {
+        user:{userId},
+        params:{id}
+    } = req
+    const find = await model.findOne({
+        _id:id,
+        createdBy:userId
+    }) // Find student by ID
 
     if(find == null){
         // If not found, send custom error
         throw new notFoundError("Provided data was not there")
     }
-    res.json({
-        status:true,
-        data:find
-    })
+    res.json(find)
 }
 
 // Controller to create a new student
@@ -48,16 +50,16 @@ const postStudents = async (req,res)=>{
 
 // Controller to update a student by ID
 const updateStudentById = async (req,res,next)=>{
-    const {id} = req.params // Extract ID from route params
-    const task = await model.findOneAndUpdate({ _id: id },req.body,{new:true}) // Update student
+    const {
+        user:{userId},
+        params:{id}
+    } = req
+    const task = await model.findOneAndUpdate({ _id: id,createdBy:userId },req.body,{new:true}) // Update student
     if (!task) {
         // If not found, send custom error
         throw new notFoundError("Student not found")
     }
-    res.json({
-        status:true,
-        data : task
-    })     
+    res.json(task)     
 }
 
 // Controller to delete a student by ID
