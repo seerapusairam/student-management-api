@@ -8,6 +8,7 @@ const getStudents = async (req,res)=>{
     if(grade){
         queObj.grade = grade // Filter by grade if provided
     }
+    queObj.createdBy = req.user.userId
     let result = model.find(queObj) // Find students matching filter
     if(sort){
         const sortList = sort.split(',').join(' ') // Prepare sort string
@@ -19,15 +20,11 @@ const getStudents = async (req,res)=>{
 
     result.skip(skip).limit(limit) // Apply pagination
     const task = await result // Execute query
-    res.json({
-        status:true,
-        data:task,
-        count:task.length
-    })
+    res.json({task,count:task.length})
 }
 
 // Controller to get a student by ID
-const getStudentById = async (req,res,next)=>{
+const getStudentById = async (req,res)=>{
     const {id} = req.params // Extract ID from route params
 
     const find = await model.findById(id) // Find student by ID
@@ -45,13 +42,8 @@ const getStudentById = async (req,res,next)=>{
 // Controller to create a new student
 const postStudents = async (req,res)=>{
     req.body.createdBy = req.user.userId
-    console.log(req.user.userId);
-    
     const task = await model.create(req.body) // Create new student
-    res.status(201).json({
-        status:true,
-        data :{task}
-    })
+    res.status(201).json(task)
 }
 
 // Controller to update a student by ID
