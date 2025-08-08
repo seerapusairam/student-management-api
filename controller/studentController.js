@@ -1,7 +1,5 @@
 const model = require('../Model/studentSchema') // Import the student schema/model
-const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
-const badRequestError = require('../Error/badRequestError')
-const notFoundError = require('../Error/notFoundError')
+const {notFoundError} = require('../Error/allErrors')
 
 // Controller to get students with optional filtering, sorting, and pagination
 const getStudents = async (req,res)=>{
@@ -45,14 +43,11 @@ const getStudentById = async (req,res,next)=>{
 }
 
 // Controller to create a new student
-const postStudents = async (req,res,next)=>{
-    const {name:taskName,grade:taskGrade} = req.body // Extract name and grade
-
-    if(!taskName || !taskGrade){
-        // If missing data, send custom error
-        throw new badRequestError("Please provide the request body data")
-    }
-    const task = await model.create({name:taskName,grade:taskGrade}) // Create new student
+const postStudents = async (req,res)=>{
+    req.body.createdBy = req.user.userId
+    console.log(req.user.userId);
+    
+    const task = await model.create(req.body) // Create new student
     res.status(201).json({
         status:true,
         data :{task}

@@ -17,7 +17,12 @@ const studentSchema = mongoose.Schema({
     },
     grade:{
         type:String,
-        default:'D'
+        default:'D',
+    },
+    createdBy:{
+        type:mongoose.Types.ObjectId,
+        ref:'userSchema',
+        required: [true, 'Please provide user']
     }
 },{timestamps:true})
 // Create a model from the schema

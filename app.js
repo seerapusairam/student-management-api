@@ -5,6 +5,7 @@ require('express-async-errors')
 const db = require('./Database/connect')
 const errorHandling = require('./middleware/errorHandling')
 const notFoundMiddleware = require('./middleware/notFound')
+const verifyToken = require('./middleware/authentication')
 
 const studentRouter = require('./router/studentRouter')
 const userRouter = require('./router/userRouter')
@@ -13,7 +14,7 @@ const userRouter = require('./router/userRouter')
 app.use(express.json())
 
 app.use('/api/user',userRouter)
-app.use('/api/students',studentRouter)
+app.use('/api/students',verifyToken, studentRouter)
 // Middleware for centralized error handling
 // This should be the last middleware in the stack
 app.use(notFoundMiddleware)

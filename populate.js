@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const data = require('./data')
-const model = require('./Model/schema')
+const model = require('./Model/studentSchema')
 const db = require('./Database/connect')
 
 const start = async()=>{
@@ -22,7 +22,7 @@ const start = async()=>{
         app.listen(5001, ()=>{
         console.log("Server was listening at 5001...")
         // Close the database connection after the server starts
-        db.close()
+        process.exit(0)
     })
     }catch(err){
         console.log(err)

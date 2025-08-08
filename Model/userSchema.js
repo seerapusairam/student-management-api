@@ -37,7 +37,7 @@ userSchema.methods.checkPassword = async function(userPassword){
 
 userSchema.methods.createJWT = async function(){
     const token = await jwt.sign(
-        {userId:this._id,userName:this.name},
+        {id:this._id,name:this.name},
         process.env.JWT_SECRET,
         {
             expiresIn:process.env.JWT_EXP
