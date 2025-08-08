@@ -1,18 +1,18 @@
 # Student Management API
 
-A simple RESTful API for managing students, built with **Node.js**, **Express.js**, and **MongoDB** using the **MVC (Model-View-Controller)** architecture.
+A RESTful API for managing students and users, built with **Node.js**, **Express.js**, and **MongoDB** using the **MVC (Model-View-Controller)** architecture.
 
-This project demonstrates basic CRUD operations on a student collection, making it ideal for learning backend development and working with databases.
+This project demonstrates CRUD operations, authentication, error handling, and modular code structure, making it ideal for learning backend development and working with databases.
 
 ---
 
 ## 🚀 Features
 
-- Retrieve all students (with filtering, sorting, and pagination)
-- Get a student by ID
-- Add a new student
-- Update an existing student
-- Delete a student
+- Student CRUD operations (Create, Read, Update, Delete)
+- User registration and authentication
+- Filtering, sorting, and pagination for students
+- Centralized error handling
+- Modular and scalable project structure
 
 ---
 
@@ -20,16 +20,28 @@ This project demonstrates basic CRUD operations on a student collection, making 
 
 ```
 ├── controller
-│   └── studentController.js      # Business logic for student operations
+│   ├── studentController.js      # Business logic for student operations
+│   └── userController.js         # Business logic for user operations
 ├── middleware
-│   └── errorHandling.js          # Centralized error handling middleware
+│   ├── authentication.js         # Authentication middleware
+│   ├── errorHandling.js          # Centralized error handling middleware
+│   └── notFound.js               # 404 handler middleware
 ├── Error
-│   └── customError.js            # Custom error class for application errors
+│   ├── allErrors.js              # Aggregates all custom errors
+│   ├── badRequestError.js        # Bad request error class
+│   ├── customError.js            # Base custom error class
+│   ├── notFoundError.js          # Not found error class
+│   └── unauthenticated.js        # Unauthenticated error class
 ├── Model
-│   └── schema.js                 # Mongoose schema/model for students
+│   ├── studentSchema.js          # Mongoose schema/model for students
+│   └── userSchema.js             # Mongoose schema/model for users
+├── Database
+│   └── connect.js                # MongoDB connection logic
 ├── router
-│   └── studentRouter.js          # API route definitions
+│   ├── studentRouter.js          # Student API route definitions
+│   └── userRouter.js             # User API route definitions
 ├── app.js                        # Application entry point
+├── populate.js                   # To add default data to the DB
 ```
 
 ---
@@ -39,10 +51,14 @@ This project demonstrates basic CRUD operations on a student collection, making 
 - Node.js
 - Express.js
 - MongoDB & Mongoose
+- JWT (for authentication, if implemented)
+- dotenv (for environment variables)
 
 ---
 
 ## 📌 API Endpoints
+
+### Student Endpoints
 
 | Method | Endpoint            | Description                        |
 |--------|---------------------|------------------------------------|
@@ -52,21 +68,39 @@ This project demonstrates basic CRUD operations on a student collection, making 
 | PUT    | `/api/students/:id` | Update student by ID               |
 | DELETE | `/api/students/:id` | Delete student by ID               |
 
-### Query Parameters for GET `/api/students`
+#### Query Parameters for GET `/api/students`
 
 - `grade` — Filter by grade (e.g., `?grade=A`)
 - `sort` — Sort by fields (e.g., `?sort=name,grade`)
 - `limit` — Limit number of results (e.g., `?limit=5`)
 - `page` — Pagination (e.g., `?page=2`)
 
+### User Endpoints
+
+| Method | Endpoint            | Description                        |
+|--------|---------------------|------------------------------------|
+| POST   | `/api/users/register` | Register a new user              |
+| POST   | `/api/users/login`    | User login (returns token)        |
+
 ---
 
-## 🧪 Sample POST Body
+## 🧪 Sample Student POST Body
 
 ```json
 {
   "name": "Alice",
   "grade": "A"
+}
+```
+
+---
+
+## 🧪 Sample User Registration Body
+
+```json
+{
+  "username": "alice123",
+  "password": "yourpassword"
 }
 ```
 
@@ -86,14 +120,14 @@ This project demonstrates basic CRUD operations on a student collection, making 
    ```
 
 3. **Set up MongoDB**
-   - Make sure MongoDB is running locally or provide a connection string in your environment variables.
+   - Make sure MongoDB is running locally or provide a connection string in your environment variables (e.g., in a `.env` file).
 
 4. **Start the server**
    ```bash
    node app.js
    ```
 
-5. The server will run on [http://localhost:5001](http://localhost:5001)
+5. The server will run on [http://localhost:5001](http://localhost:5001) by default.
 
 ---
 
