@@ -45,7 +45,7 @@ const getStudentById = async (req,res)=>{
 const postStudents = async (req,res)=>{
     req.body.createdBy = req.user.userId
     const task = await model.create(req.body) // Create new student
-    res.status(201).json(task)
+    res.json(task)
 }
 
 // Controller to update a student by ID
@@ -64,16 +64,16 @@ const updateStudentById = async (req,res,next)=>{
 
 // Controller to delete a student by ID
 const deleteStudentById = async (req,res,next)=>{
-    const {id} = req.params // Extract ID from route params
-    const task = await model.findByIdAndDelete(id) // Delete student
+    const {
+        user:{userId},
+        params:{id}
+    } = req
+    const task = await model.findOneAndDelete({ _id: id,createdBy:userId })
     if (!task) {
         // If not found, send custom error
         throw new notFoundError("Student not found")
     }
-    res.status(201).json({
-        status:true,
-        data : task
-    }) 
+    res.json(task) 
 }
 
 // Export all controller functions
