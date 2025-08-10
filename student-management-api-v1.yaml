@@ -25,7 +25,7 @@ paths:
               $ref: '#/components/schemas/UserRegister'
       responses:
         '201':
-          description: User registered successfully
+          description: Login successful, returns Name and JWT token
           content:
             application/json:
               schema:
@@ -44,11 +44,11 @@ paths:
               $ref: '#/components/schemas/UserLogin'
       responses:
         '200':
-          description: Login successful, returns JWT token
+          description: Login successful, returns Name and JWT token
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthResponse'
+                $ref: '#/components/schemas/UserResponse'
         '401':
           description: Invalid credentials
   /api/students:
@@ -210,34 +210,33 @@ components:
   schemas:
     UserRegister:
       type: object
-      required: [username, password]
+      required: [name, email, password]
       properties:
-        username:
+        name:
           type: string
-          example: alice123
+          example: alice
+        email:
+          type: string
+          example: student123@gmail.com
         password:
           type: string
           example: yourpassword
     UserLogin:
       type: object
-      required: [username, password]
+      required: [email, password]
       properties:
-        username:
+        email:
           type: string
-          example: alice123
+          example: student123@gmail.com
         password:
           type: string
           example: yourpassword
     UserResponse:
       type: object
       properties:
-        id:
+        name:
           type: string
-        username:
-          type: string
-    AuthResponse:
-      type: object
-      properties:
+          example: studentname
         token:
           type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
