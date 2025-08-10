@@ -6,12 +6,14 @@ const db = require('./Database/connect')
 const errorHandling = require('./middleware/errorHandling')
 const notFoundMiddleware = require('./middleware/notFound')
 const verifyToken = require('./middleware/authentication')
+const limit = require('./middleware/rateLimiting')
 
 const studentRouter = require('./router/studentRouter')
 const userRouter = require('./router/userRouter')
 
 //middleware to parse JSON bodies
 app.use(express.json())
+app.use(limit)
 
 app.use('/api/user',userRouter)
 app.use('/api/students',verifyToken, studentRouter)
