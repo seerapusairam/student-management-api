@@ -1,0 +1,284 @@
+openapi: 3.0.3
+info:
+  title: Student Management API
+  version: 1.0.0
+  description: |
+    A RESTful API for managing students and users, built with Node.js, Express.js, and MongoDB.
+    Supports CRUD operations, authentication, filtering, sorting, and pagination.
+servers:
+  - url: http://localhost:5001
+tags:
+  - name: Students
+    description: Operations related to student management
+  - name: Users
+    description: User registration and authentication
+paths:
+  /api/users/register:
+    post:
+      tags: [Users]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid input
+  /api/users/login:
+    post:
+      tags: [Users]
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: Login successful, returns JWT token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+  /api/students:
+    get:
+      tags: [Students]
+      summary: Get all students (with filters, sorting, pagination)
+      parameters:
+        - in: query
+          name: grade
+          schema:
+            type: string
+          description: Filter by grade
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: Sort by fields (comma separated, e.g. name,grade)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Limit number of results
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page number for pagination
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: Bearer token
+      responses:
+        '200':
+          description: List of students
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentListResponse'
+        '401':
+          description: Unauthorized
+    post:
+      tags: [Students]
+      summary: Add a new student
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCreate'
+      responses:
+        '201':
+          description: Student created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+  /api/students/{id}:
+    get:
+      tags: [Students]
+      summary: Get student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Student ID
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: Bearer token
+      responses:
+        '200':
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Student not found
+        '401':
+          description: Unauthorized
+    put:
+      tags: [Students]
+      summary: Update student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Student ID
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: Bearer token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentUpdate'
+      responses:
+        '200':
+          description: Student updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Student not found
+        '401':
+          description: Unauthorized
+    delete:
+      tags: [Students]
+      summary: Delete student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Student ID
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: Bearer token
+      responses:
+        '200':
+          description: Student deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Student not found
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserRegister:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: alice123
+        password:
+          type: string
+          example: yourpassword
+    UserLogin:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: alice123
+        password:
+          type: string
+          example: yourpassword
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    Student:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          example: Alice
+        grade:
+          type: string
+          example: A
+        createdBy:
+          type: string
+    StudentCreate:
+      type: object
+      required: [name, grade]
+      properties:
+        name:
+          type: string
+          example: Alice
+        grade:
+          type: string
+          example: A
+    StudentUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Alice
+        grade:
+          type: string
+          example: B
+    StudentListResponse:
+      type: object
+      properties:
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+        count:
+          type: integer
