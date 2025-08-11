@@ -54,12 +54,15 @@ paths:
   /api/students:
     get:
       tags: [Students]
-      summary: Get all students (with filters, sorting, pagination)
+      summary: Get all students
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: grade
           schema:
             type: string
+            example: ["A","B","C","D"]
           description: Filter by grade
         - in: query
           name: sort
@@ -76,12 +79,6 @@ paths:
           schema:
             type: integer
           description: Page number for pagination
-        - in: header
-          name: Authorization
-          schema:
-            type: string
-          required: true
-          description: Bearer token
       responses:
         '200':
           description: List of students
@@ -117,19 +114,16 @@ paths:
     get:
       tags: [Students]
       summary: Get student by ID
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: string
+            example: "689667780e99b12a040c0a9"
           description: Student ID
-        - in: header
-          name: Authorization
-          schema:
-            type: string
-          required: true
-          description: Bearer token
       responses:
         '200':
           description: Student found
@@ -144,19 +138,16 @@ paths:
     put:
       tags: [Students]
       summary: Update student by ID
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: string
+            example: "689667780e99b12a040c0a9"
           description: Student ID
-        - in: header
-          name: Authorization
-          schema:
-            type: string
-          required: true
-          description: Bearer token
       requestBody:
         required: true
         content:
@@ -177,19 +168,16 @@ paths:
     delete:
       tags: [Students]
       summary: Delete student by ID
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
           required: true
           schema:
             type: string
+            example: "689667780e99b12a040c0a9"
           description: Student ID
-        - in: header
-          name: Authorization
-          schema:
-            type: string
-          required: true
-          description: Bearer token
       responses:
         '200':
           description: Student deleted
@@ -245,6 +233,7 @@ components:
       properties:
         _id:
           type: string
+          example: "689667780e99b12a040c0a9"
         name:
           type: string
           example: Alice
@@ -253,6 +242,7 @@ components:
           example: A
         createdBy:
           type: string
+          example: "689667780e99b12a040c0a9"
     StudentCreate:
       type: object
       required: [name, grade]
@@ -281,3 +271,4 @@ components:
             $ref: '#/components/schemas/Student'
         count:
           type: integer
+          example: 10
