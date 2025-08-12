@@ -6,7 +6,7 @@ const model = require("../model/studentSchema");
 const { updateStudentById } = require("../controller/studentController");
 const { notFoundError } = require("../error/allErrors");
 
-describe("updateById", () => {
+describe("updateStudentById", () => {
     let req, res;
 
     beforeEach(() => {
