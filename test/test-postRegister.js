@@ -3,9 +3,9 @@ const sinon = require('sinon');
 const expect = chai.expect;
 
 const { postRegister } = require('../controller/userController');
-const { badRequestError, unauthenticatedError } = require('../Error/allErrors');
+const { badRequestError, unauthenticatedError } = require('../error/allErrors');
 
-const model = require('../Model/userSchema');
+const model = require('../model/userSchema');
 
 describe('postRegister', () => {
   afterEach(() => {
