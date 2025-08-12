@@ -12,13 +12,13 @@ const getStudents = async (req,res)=>{
     let result = model.find(queObj) // Find students matching filter
     if(sort){
         const sortList = sort.split(',').join(' ') // Prepare sort string
-        result.sort(sortList) // Apply sorting
+        result = result.sort(sortList) // Apply sorting
     }
     const limit = Number(req.query.limit) || 10 // Set limit (default 10)
     const page = Number(req.query.page) || 1 // Set page (default 1)
     const skip = (page - 1) * limit // Calculate skip for pagination
 
-    result.skip(skip).limit(limit) // Apply pagination
+    result = result.skip(skip).limit(limit) // Apply pagination
     const task = await result // Execute query
     res.json({task,count:task.length})
 }
