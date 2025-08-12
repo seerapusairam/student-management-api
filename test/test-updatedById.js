@@ -3,15 +3,16 @@ const sinon = require("sinon");
 const expect = chai.expect;
 
 const model = require("../model/studentSchema");
-const { getStudentById } = require("../controller/studentController");
+const { updateStudentById } = require("../controller/studentController");
 const { notFoundError } = require("../error/allErrors");
 
-describe("getStudentById", () => {
+describe("updateById", () => {
     let req, res;
 
     beforeEach(() => {
       req = {
         user: { userId: "user123" },
+        body:{name:"sai",grade:"A"},
         params: { id: "student123" }
       };
       res = {
@@ -23,7 +24,7 @@ describe("getStudentById", () => {
       sinon.restore();
     });
 
-    it("should return student data when found", async () => {
+    it("should return updated student data", async () => {
       const fakeStudent = {
         _id: "student123",
         name: "sai",
@@ -32,23 +33,23 @@ describe("getStudentById", () => {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      sinon.stub(model, "findOne").resolves(fakeStudent);
+      sinon.stub(model, "findOneAndUpdate").resolves(fakeStudent);
 
-      await getStudentById(req, res);
+      await updateStudentById(req, res);
 
-      expect(model.findOne.calledOnce).to.be.true;
+      expect(model.findOneAndUpdate.calledOnce).to.be.true;
       expect(res.json.calledWith(fakeStudent)).to.be.true;
     });
 
   it("should throw notFoundError when student not found", async () => {
-    sinon.stub(model, "findOne").resolves(null);
+    sinon.stub(model, "findOneAndUpdate").resolves(null);
 
     try {
-      await getStudentById(req, res);
+      await updateStudentById(req, res);
       throw new Error("Expected error but none thrown");// if the function throw error then no need to add this line is a safety net
     } catch (err) {
       expect(err).to.be.instanceOf(notFoundError);
-      expect(err.message).to.equal("Provided data was not there");
+      expect(err.message).to.equal("Student not found");
     }
   });
 })
