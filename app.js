@@ -1,8 +1,9 @@
 const express = require('express')
 const app = express()
+const helmet = require('helmet');
 require('dotenv').config()
 require('express-async-errors')
-const db = require('./Database/connect')
+const db = require('./database/connect')
 const errorHandling = require('./middleware/errorHandling')
 const notFoundMiddleware = require('./middleware/notFound')
 const verifyToken = require('./middleware/authentication')
@@ -13,7 +14,10 @@ const userRouter = require('./router/userRouter')
 
 //middleware to parse JSON bodies
 app.use(express.json())
+//This middleware is used for rate limiting
 app.use(limit)
+//this middleware is used secure your app by setting various HTTP response headers.
+app.use(helmet());
 
 app.use('/api/user',userRouter)
 app.use('/api/students',verifyToken, studentRouter)
