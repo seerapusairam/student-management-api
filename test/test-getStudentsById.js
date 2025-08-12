@@ -1,13 +1,10 @@
 const chai = require("chai");
 const sinon = require("sinon");
 const expect = chai.expect;
-const jwt = require("jsonwebtoken");
-const app = require("../app"); 
+
 const model = require("../model/studentSchema");
 const { getStudentById } = require("../controller/studentController");
 const { notFoundError } = require("../error/allErrors");
-const JWT_SECRET = "your_jwt_secret_here";
-const token = jwt.sign({ userId: "user123" }, JWT_SECRET, { expiresIn: "1h" })
 
 describe("getStudentById", () => {
     let req, res;
