@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+.gitignore
+data.js
+populate.js
+student-management-api-v1.yaml
+Test
