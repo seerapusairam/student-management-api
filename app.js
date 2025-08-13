@@ -3,7 +3,7 @@ const app = express()
 const helmet = require('helmet');
 require('dotenv').config()
 require('express-async-errors')
-const db = require('./database/connect')
+const db = require('./db/connect')
 const errorHandling = require('./middleware/errorHandling')
 const notFoundMiddleware = require('./middleware/notFound')
 const verifyToken = require('./middleware/authentication')

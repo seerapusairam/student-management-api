@@ -1,4 +1,4 @@
-const model = require('../model/userSchema') 
+const model = require('../models/userSchema') 
 const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
 const {badRequestError,unauthenticatedError} = require('../errors/allErrors')
 

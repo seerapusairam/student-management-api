@@ -1,4 +1,4 @@
-const model = require('../model/studentSchema') // Import the student schema/model
+const model = require('../models/studentSchema') // Import the student schema/model
 const {notFoundError} = require('../errors/allErrors')
 
 // Controller to get students with optional filtering, sorting, and pagination
