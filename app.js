@@ -11,6 +11,7 @@ const limit = require('./middleware/rateLimiting')
 
 const studentRouter = require('./router/studentRouter')
 const userRouter = require('./router/userRouter')
+const PORT = process.env.PORT || 3000
 
 //middleware to parse JSON bodies
 app.use(express.json())
@@ -30,7 +31,7 @@ app.use(errorHandling)
 const start = async()=>{
     try{
         await db(process.env.URL)
-        app.listen(5001, ()=>{
+        app.listen(PORT, ()=>{
         console.log("Server was listening at 5001...")
     })
     }catch(err){
