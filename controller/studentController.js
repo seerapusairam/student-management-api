@@ -1,5 +1,5 @@
 const model = require('../model/studentSchema') // Import the student schema/model
-const {notFoundError} = require('../error/allErrors')
+const {notFoundError} = require('../errors/allErrors')
 
 // Controller to get students with optional filtering, sorting, and pagination
 const getStudents = async (req,res)=>{

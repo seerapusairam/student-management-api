@@ -1,4 +1,4 @@
-const customError = require('../error/customError'); // Import custom error class
+const customError = require('../errors/customError'); // Import custom error class
 const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
 
 // Express middleware for centralized error handling

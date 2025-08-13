@@ -1,6 +1,6 @@
 const model = require('../model/userSchema') 
 const {StatusCodes} = require('http-status-codes') // Import HTTP status codes
-const {badRequestError,unauthenticatedError} = require('../error/allErrors')
+const {badRequestError,unauthenticatedError} = require('../errors/allErrors')
 
 
 const postLogin = async (req,res)=>{
