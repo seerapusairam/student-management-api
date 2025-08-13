@@ -20,28 +20,40 @@ This project demonstrates CRUD operations, authentication, error handling, and m
 
 ```
 ├── controller
-│   ├── studentController.js      # Business logic for student operations
-│   └── userController.js         # Business logic for user operations
+│   ├── studentController.js                       # Business logic for student operations
+│   └── userController.js                          # Business logic for user operations
 ├── middleware
-│   ├── authentication.js         # Authentication middleware
-│   ├── errorHandling.js          # Centralized error handling middleware
-│   └── notFound.js               # 404 handler middleware
+│   ├── authentication.js                          # Authentication middleware
+│   ├── errorHandling.js                           # Centralized error handling middleware
+|   ├── notFound.js                                # 404 handler middleware
+│   └── ratelimiting.js                            # middleware to handling rate limiting
 ├── Error
-│   ├── allErrors.js              # Aggregates all custom errors
-│   ├── badRequestError.js        # Bad request error class
-│   ├── customError.js            # Base custom error class
-│   ├── notFoundError.js          # Not found error class
-│   └── unauthenticated.js        # Unauthenticated error class
+│   ├── allErrors.js                               # Aggregates all custom errors
+│   ├── badRequestError.js                         # Bad request error class
+│   ├── customError.js                             # Base custom error class
+│   ├── notFoundError.js                           # Not found error class
+│   └── unauthenticated.js                         # Unauthenticated error class
+├──Test
+│   ├── test-deleteStudentById.js                  # unit testing for deleteStudentById
+│   ├── test-getStudents.js                        # unit testing for getStudents
+│   ├── test-getStudentById.js                     # unit testing for getStudentById
+│   ├── test-postLogin.js                          # unit testing for postLogin
+│   ├── test-postRegister.js                       # unit testing for postRegister
+|   ├── test-postStudents.js                       # unit testing for postStudents
+│   └── test-updateStudentById.js                  # unit testing for updateStudentById
 ├── Model
-│   ├── studentSchema.js          # Mongoose schema/model for students
-│   └── userSchema.js             # Mongoose schema/model for users
+│   ├── studentSchema.js                           # Mongoose schema/model for students
+│   └── userSchema.js                              # Mongoose schema/model for users
 ├── Database
-│   └── connect.js                # MongoDB connection logic
+│   └── connect.js                                 # MongoDB connection logic
 ├── router
-│   ├── studentRouter.js          # Student API route definitions
-│   └── userRouter.js             # User API route definitions
-├── app.js                        # Application entry point
-├── populate.js                   # To add default data to the DB
+│   ├── studentRouter.js                           # Student API route definitions
+│   └── userRouter.js                              # User API route definitions
+├── app.js                                         # Application entry point
+├── populate.js                                    # To add default data to the DB
+├── data.js                                        # sample data for student db
+├── Student management API.postman_collection.json # postman collection
+└── student-management-api-v1.yaml                 # Open API specification 
 ```
 
 ---
