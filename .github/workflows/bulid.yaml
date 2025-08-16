@@ -1,45 +1,69 @@
-name: Build Node Pipeline
+name: Build CI/CD Pipeline
 
 on: push
 
 jobs:
+  # -----------------------------
+  # Node.js build & test
+  # -----------------------------
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+    # Checkout the repo
       - name: Check out
         uses: actions/checkout@v4
-
+    
+    # Setup node 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
+    # Checking node version
       - name: Checking node version
         run:
           node --version
-          npm --version
       
+    # Installing all dependencies 
       - name: Install Dependencies
         run: npm install
 
+    # Running mocha-chai test cases
       - name: Run Test Cases
         run: npm test
 
   docker-build-test:
+  # -----------------------------
+  # docker build & test
+  # -----------------------------
     runs-on: ubuntu-latest
     needs: build-and-test 
 
     steps:
+    # Checkout the repo
       - name: Check out
         uses: actions/checkout@v4
 
+    # Building the docker image by using Dockerfile
       - name: Build docker image
         run: docker build -t student-managment-api-v1-image:test .
-      
+    
+    # Building the container with the image we created
       - name: Run container with image
-        run: |
-          docker run -d -p 3000:3000 --name student-managment-api-v1 student-managment-api-v1-image:test
-          sleep 10
+        run: docker run -d -p 3000:3000 --name student-managment-api-v1 student-managment-api-v1-image:test
 
-      - name: Check the container
-        run: docker container ls
+    # Waiting for 10sec until the container is up running
+      - name: Wait for Container to start
+        run: sleep 10
+
+    # Calling the route to check if the application was deployed properly
+      - name: Curl health endpoint
+        run: |
+          curl http://localhost:3000 || exit 1 # we need to get Error "Route not Found"
+
+    # Removing image and container
+      - name: Removing container and image 
+        run: |
+          docker stop student-managment-api-v1
+          docker rm student-managment-api-v1
+          docker rmi student-managment-api-v1:test
