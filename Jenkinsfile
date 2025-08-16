@@ -1,10 +1,18 @@
 pipeline {
-    agent any
-
+    agent {
+        docker { image 'node:18-alpine' }
+    }
+    
     stages {
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Hello from Sai!'
+                sh 'npm install'
+            }
+        }
+
+        stage('Run Test Cases') {
+            steps {
+                sh 'npm test'
             }
         }
     }
