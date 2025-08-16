@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const expect = chai.expect;
 
 const { postLogin } = require('../controller/userController');
-const { badRequestError, unauthenticatedError } = require('../error/allErrors');
+const { badRequestError, unauthenticatedError } = require('../errors/allErrors');
 const model = require('../model/userSchema');
 
 describe('postLogin', () => {

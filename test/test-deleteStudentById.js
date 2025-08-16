@@ -4,7 +4,7 @@ const expect = chai.expect;
 
 const model = require("../model/studentSchema");
 const { deleteStudentById } = require("../controller/studentController");
-const { notFoundError } = require("../error/allErrors");
+const { notFoundError } = require("../errors/allErrors");
 
 describe("deleteStudentById", () => {
     let req, res;

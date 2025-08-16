@@ -4,7 +4,7 @@ const expect = chai.expect;
 
 const model = require("../model/studentSchema");
 const { getStudentById } = require("../controller/studentController");
-const { notFoundError } = require("../error/allErrors");
+const { notFoundError } = require("../errors/allErrors");
 
 describe("getStudentById", () => {
     let req, res;
