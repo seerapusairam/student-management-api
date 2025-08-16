@@ -51,13 +51,13 @@ jobs:
     
     # Building the container with the image we created
       - name: Run container with image
-        run: docker run -d -p 3000:3000 \
-          --name student-managment-api-v1 \
-          -e URL="${{ secrets.URL }}" \
-          -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-          -e JWT_EXP="${{ secrets.JWT_EXP }}" \
-          -e PORT="${{ secrets.PORT }}" \
-          student-managment-api-v1-image:test
+        run: |
+          docker run -d -p 3000:3000 --name student-managment-api-v1 \
+            -e URL="${{ secrets.URL }}" \
+            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            -e JWT_EXP="${{ secrets.JWT_EXP }}" \
+            -e PORT="${{ secrets.PORT }}" \
+            student-managment-api-v1-image:test
 
     # Waiting for 10sec until the container is up running
       - name: Wait for Container to start
