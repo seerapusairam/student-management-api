@@ -1,9 +1,16 @@
 pipeline {
     agent any
+
     stages {
-        stage('Hello') {
+        stage('Clone Repo') {
             steps {
-                echo 'Pipeline triggered!'
+                git branch: 'main', url: 'https://github.com/seerapusairam/student-management-api.git'
+            }
+        }
+
+        stage('List Files') {
+            steps {
+                sh 'ls -la'
             }
         }
     }
