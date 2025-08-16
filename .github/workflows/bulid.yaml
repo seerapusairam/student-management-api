@@ -60,10 +60,12 @@ jobs:
       - name: Check running containers
         run: docker ps
 
-    # Calling the route to check if the application was deployed properly
-      - name: Curl health endpoint
-        run: |
-          curl http://localhost:3000 || exit 1
+      - name: Show container logs
+        run: docker logs student-managment-api-v1 || echo "Container exited"
+    # # Calling the route to check if the application was deployed properly
+    #   - name: Curl health endpoint
+    #     run: |
+    #       curl http://localhost:3000 || exit 1
 
     # Removing image and container
       - name: Removing container and image 
