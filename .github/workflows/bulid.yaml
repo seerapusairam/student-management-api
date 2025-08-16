@@ -31,4 +31,12 @@ jobs:
 
     steps:
       - name: Build docker image
-        run: docker build -t student-managment-api-v1-image
+        run: docker build -t student-managment-api-v1-image:test
+      
+      - name: Run container with image
+        run: |
+          docker run -d -p 3000:3000 --name student-managment-api-v1 student-managment-api-v1-image:test
+          sleep 10
+
+      - name: Check the container
+        run: docker container ls
