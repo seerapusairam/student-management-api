@@ -31,9 +31,7 @@ app.use(errorHandling)
 const start = async()=>{
     try{
         await db(process.env.URL)
-        app.listen(PORT, ()=>{
-        console.log("Server was listening at 5001...")
-    })
+        app.listen(PORT, "0.0.0.0")
     }catch(err){
         console.log(err)
     }
