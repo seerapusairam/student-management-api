@@ -5,8 +5,20 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:16
+    container: node:24
 
     steps:
-      - run: node --version
-      - run: npm --version
+      - name: Check out
+        uses: actions/checkout@v4 
+
+      - name: Checking node version
+        run:
+          node --version
+          npm --version
+      
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Test Cases
+        run: npm test
+      
