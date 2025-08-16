@@ -71,14 +71,14 @@ jobs:
       - name: Show container logs
         run: docker logs student-managment-api-v1 || echo "Container exited"
 
-    # # Calling the route to check if the application was deployed properly
-    #   - name: Curl health endpoint
-    #     run: |
-    #       curl http://localhost:3000 || exit 1
+    # Calling the route to check if the application was deployed properly
+      - name: Curl health endpoint
+        run: |
+          curl http://localhost:3000 || exit 1
 
     # Removing image and container
       - name: Removing container and image 
         run: |
           docker stop student-managment-api-v1
           docker rm student-managment-api-v1
-          docker rmi student-managment-api-v1:test
+          docker rmi student-managment-api-v1-image:test
