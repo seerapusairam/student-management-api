@@ -54,7 +54,11 @@ jobs:
 
     # Waiting for 10sec until the container is up running
       - name: Wait for Container to start
-        run: sleep 10
+        run: sleep 20
+    
+    #Checking if continer is running
+      - name: Check running containers
+        run: docker ps
 
     # Calling the route to check if the application was deployed properly
       - name: Curl health endpoint
