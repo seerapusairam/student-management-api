@@ -1,10 +1,9 @@
 pipeline {
     agent any
-     
     stages {
-        stage('Test') {
+        stage('Hello') {
             steps {
-                echo 'Deploying'
+                echo 'Pipeline triggered!'
             }
         }
     }
