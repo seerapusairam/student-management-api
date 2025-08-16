@@ -21,4 +21,6 @@ jobs:
 
       - name: Run Test Cases
         run: npm test
-      
+
+      - name: Build docker image
+        run: docker build -t student-managment-api-v1-image
