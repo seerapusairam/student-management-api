@@ -31,7 +31,7 @@ app.use(errorHandling)
 const start = async()=>{
     try{
         await db(process.env.URL)
-        app.listen(PORT, "0.0.0.0")
+        app.listen(PORT, "0.0.0.0") // as i'm running in a container to listen i opened to all
     }catch(err){
         console.log(err)
     }

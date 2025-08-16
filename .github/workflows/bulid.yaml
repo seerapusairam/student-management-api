@@ -61,20 +61,16 @@ jobs:
 
     # Waiting for 10sec until the container is up running
       - name: Wait for Container to start
-        run: sleep 20
+        run: sleep 10
     
-    #Checking if continer is running
-      - name: Check running containers
-        run: docker ps
-
     #To check logs in case of failure
       - name: Show container logs
         run: docker logs student-managment-api-v1 || echo "Container exited"
 
-    # Calling the route to check if the application was deployed properly
+    # Calling the route to check if the application was deployed properly - Will get Error - "Invalid Credentials"
       - name: Curl health endpoint
         run: |
-          curl http://localhost:3000 || exit 1
+          curl http://localhost:3000/api/students
 
     # Removing image and container
       - name: Removing container and image 
