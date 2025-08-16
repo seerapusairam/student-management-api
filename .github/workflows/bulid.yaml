@@ -59,7 +59,7 @@ jobs:
     # Calling the route to check if the application was deployed properly
       - name: Curl health endpoint
         run: |
-          curl http://localhost:3000 || exit 1 # we need to get Error "Route not Found"
+          curl http://localhost:3000 || exit 1
 
     # Removing image and container
       - name: Removing container and image 
