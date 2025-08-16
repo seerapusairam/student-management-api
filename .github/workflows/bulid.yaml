@@ -37,13 +37,14 @@ jobs:
   # docker build & test
   # -----------------------------
     runs-on: ubuntu-latest
-    needs: build-and-test 
+    needs: build-and-test
+    environment: pipeline 
 
     steps:
     # Checkout the repo
       - name: Check out
         uses: actions/checkout@v4
-
+        
     # Building the docker image by using Dockerfile
       - name: Build docker image
         run: docker build -t student-managment-api-v1-image:test .
