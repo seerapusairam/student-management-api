@@ -8,6 +8,7 @@ const errorHandling = require('./middleware/errorHandling')
 const notFoundMiddleware = require('./middleware/notFound')
 const verifyToken = require('./middleware/authentication')
 const limit = require('./middleware/rateLimiting')
+const { connectRedis } = require('./config/redisClient')
 
 const studentRouter = require('./router/studentRouter')
 const userRouter = require('./router/userRouter')
@@ -31,6 +32,7 @@ app.use(errorHandling)
 const start = async()=>{
     try{
         await db(process.env.URL)
+        await connectRedis()
         app.listen(PORT, "0.0.0.0") // as i'm running in a container to listen i opened to all
     }catch(err){
         console.log(err)
