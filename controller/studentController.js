@@ -1,5 +1,6 @@
 const model = require('../model/studentSchema') // Import the student schema/model
 const {notFoundError} = require('../errors/allErrors')
+const { redisClient } = require('../config/redisClient')
 
 // Controller to get students with optional filtering, sorting, and pagination
 const getStudents = async (req,res)=>{
@@ -29,15 +30,30 @@ const getStudentById = async (req,res)=>{
         user:{userId},
         params:{id}
     } = req
+
+    const cacheKey = `student:${id}:${userId}`
+
+    const cacheFind = await redisClient.get(cacheKey)
+
+    if(cacheFind){
+        console.log("Cache HIT! Found data.");
+        return res.json(JSON.parse(cacheFind))
+    }
+
+    console.log("Cache MISS. Fetching from DB...");
     const find = await model.findOne({
         _id:id,
         createdBy:userId
     }) // Find student by ID
 
-    if(find == null){
+    if(!find){
         // If not found, send custom error
         throw new notFoundError("Provided data was not there")
     }
+
+    console.log("DB Found. Storing in Redis now.")
+    await redisClient.SETEX(cacheKey,3600,JSON.stringify(find))
+
     res.json(find)
 }
 
