@@ -1,4 +1,4 @@
-const model = require('../model/studentSchema') // Import the student schema/model
+const model = require('../model/studentSchema')
 const {notFoundError} = require('../errors/allErrors')
 const { redisClient } = require('../config/redisClient')
 
@@ -39,7 +39,6 @@ const getStudents = async (req,res)=>{
 
 // Controller to get a student by ID
 const getStudentById = async (req,res)=>{
-    // Destructure userId from the user object and id from the params
     const {
         user:{userId},
         params:{id}
@@ -68,7 +67,7 @@ const getStudentById = async (req,res)=>{
     }
 
     // If the student is found in the database, store it in the Redis cache for future requests
-    await redisClient.SETEX(cacheKey,3600,JSON.stringify(find))
+    await redisClient.setEx(cacheKey,3600,JSON.stringify(find))
 
     // Return the student as a JSON response
     res.json(find)
@@ -111,7 +110,6 @@ const updateStudentById = async (req,res,next)=>{
 
 // Controller to delete a student by ID
 const deleteStudentById = async (req,res,next)=>{
-    // Destructure userId from the user object and id from the params
     const {
         user:{userId},
         params:{id}
