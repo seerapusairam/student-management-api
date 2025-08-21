@@ -5,7 +5,6 @@ A robust and secure RESTful API for managing students and users, built with **No
 This project is an excellent example of a modern, scalable, and well-tested backend application, suitable for both educational purposes and as a foundation for a production system.
 
 ---
-
 ## Features
 * **Student Management:** Full CRUD (Create, Read, Update, Delete) operations for students.
 * **User Authentication:** Secure user registration and login with JSON Web Tokens (JWT).

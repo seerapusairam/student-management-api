@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const data = require('./data')
-const model = require('./Model/studentSchema')
+const model = require('./model/studentSchema')
 const db = require('./Database/connect')
 
 const start = async()=>{
