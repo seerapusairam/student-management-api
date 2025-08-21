@@ -18,6 +18,7 @@ This project is an excellent example of a modern, scalable, and well-tested back
 * **CI/CD Pipeline:** Automated build, test, and deployment pipeline using GitHub Actions and Docker.
 * **Unit Tested:** Comprehensive unit tests for all major functionalities using Mocha and Chai.
 * **API Documentation:** OpenAPI (Swagger) specification for clear and interactive API documentation.
+* **Caching:** Implemented Redis for caching frequently accessed data, improving response times and reducing database load.
 ---
 
 ## Project Structure
@@ -25,6 +26,8 @@ This project is an excellent example of a modern, scalable, and well-tested back
 ```
 ├── .github/workflows
 │   └── build.yaml                  # GitHub Actions CI/CD pipeline
+├── config
+│   └── redisClient.js              # Redis client configuration
 ├── controller
 │   ├── studentController.js        # Business logic for student operations
 │   └── userController.js           # Business logic for user operations
@@ -71,6 +74,7 @@ This project is an excellent example of a modern, scalable, and well-tested back
 
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB, Mongoose
+* **Caching:** Redis
 * **Authentication:** JWT (JSON Web Tokens)
 * **Testing:** Mocha, Chai, Sinon
 * **CI/CD:** Docker, GitHub Actions
@@ -79,6 +83,7 @@ This project is an excellent example of a modern, scalable, and well-tested back
     * `helmet` for security headers
     * `express-rate-limit` for rate limiting
     * `express-async-errors` for handling async errors in Express
+    * `redis` for caching
 
 ---
 
@@ -172,6 +177,7 @@ All student endpoints require a valid JWT token in the `Authorization` header.
 
    ```
    URL=<your-mongodb-connection-string>
+   REDIS_URL=<your-redis-connection-string>
    JWT_SECRET=<your-jwt-secret>
    JWT_EXP=<your-jwt-expiration-time>
    PORT=<your-port-number>
