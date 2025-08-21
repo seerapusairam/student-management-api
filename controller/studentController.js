@@ -70,11 +70,17 @@ const updateStudentById = async (req,res,next)=>{
         user:{userId},
         params:{id}
     } = req
+
+    const cachekey = `student:${id}:${userId}`
+
     const task = await model.findOneAndUpdate({ _id: id,createdBy:userId },req.body,{new:true}) // Update student
     if (!task) {
         // If not found, send custom error
         throw new notFoundError("Student not found")
     }
+
+    await redisClient.del(cachekey)
+
     res.json(task)     
 }
 
@@ -84,11 +90,17 @@ const deleteStudentById = async (req,res,next)=>{
         user:{userId},
         params:{id}
     } = req
+
+    const cachekey = `student:${id}:${userId}`
+
     const task = await model.findOneAndDelete({ _id: id,createdBy:userId })
     if (!task) {
         // If not found, send custom error
         throw new notFoundError("Student not found")
     }
+
+    await redisClient.del(cachekey)
+
     res.json(task) 
 }
 
