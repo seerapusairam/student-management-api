@@ -36,9 +36,11 @@ const getStudentById = async (req,res)=>{
     const cacheFind = await redisClient.get(cacheKey)
 
     if(cacheFind){
+        console.log("Cache HIT! Found data.");
         return res.json(JSON.parse(cacheFind))
     }
 
+    console.log("Cache MISS. Fetching from DB...");
     const find = await model.findOne({
         _id:id,
         createdBy:userId
@@ -46,10 +48,11 @@ const getStudentById = async (req,res)=>{
 
     if(!find){
         // If not found, send custom error
-        throw new notFoundError("Id Not Found")
+        throw new notFoundError("Provided data was not there")
     }
 
-    await redisClient.setEx(cacheKey,3600,JSON.stringify(find))
+    console.log("DB Found. Storing in Redis now.")
+    await redisClient.SETEX(cacheKey,3600,JSON.stringify(find))
 
     res.json(find)
 }
@@ -67,17 +70,11 @@ const updateStudentById = async (req,res,next)=>{
         user:{userId},
         params:{id}
     } = req
-
-    const cachekey = `student:${id}:${userId}`
-
     const task = await model.findOneAndUpdate({ _id: id,createdBy:userId },req.body,{new:true}) // Update student
     if (!task) {
         // If not found, send custom error
         throw new notFoundError("Student not found")
     }
-
-    await redisClient.del(cachekey)
-
     res.json(task)     
 }
 
@@ -87,17 +84,11 @@ const deleteStudentById = async (req,res,next)=>{
         user:{userId},
         params:{id}
     } = req
-
-    const cachekey = `student:${id}:${userId}`
-
     const task = await model.findOneAndDelete({ _id: id,createdBy:userId })
     if (!task) {
         // If not found, send custom error
         throw new notFoundError("Student not found")
     }
-
-    await redisClient.del(cachekey)
-
     res.json(task) 
 }
 
