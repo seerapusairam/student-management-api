@@ -53,12 +53,10 @@ const getStudentById = async (req,res)=>{
 
     // If the student is found in the cache, return it
     if(cacheFind){
-        console.log("Cache HIT! Found data.");
         return res.json(JSON.parse(cacheFind))
     }
 
     // If the student is not in the cache, fetch it from the database
-    console.log("Cache MISS. Fetching from DB...");
     const find = await model.findOne({
         _id:id,
         createdBy:userId
@@ -66,11 +64,10 @@ const getStudentById = async (req,res)=>{
 
     // If the student is not found in the database, throw a notFoundError
     if(!find){
-        throw new notFoundError("Provided data was not there")
+        throw new notFoundError("Not Found")
     }
 
     // If the student is found in the database, store it in the Redis cache for future requests
-    console.log("DB Found. Storing in Redis now.")
     await redisClient.SETEX(cacheKey,3600,JSON.stringify(find))
 
     // Return the student as a JSON response
