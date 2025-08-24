@@ -34,7 +34,7 @@ jobs:
     # Checkout the git repo
       - name: Check out
         uses: actions/checkout@v4
-        
+
     #Install Docker-compose
       - name: Install Docker Compose
         run: |
@@ -62,7 +62,7 @@ jobs:
 
     # Running mocha-chai test cases
       - name: Run Test Cases inside the container
-        run: docker-compose exec app npm test
+        run: docker-compose exec -T app npm test
 
     # Calling the route to check if the application was deployed properly - Will get Error - "Invalid Credentials"
       - name: Curl health endpoint
