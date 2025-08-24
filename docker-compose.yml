@@ -2,9 +2,12 @@ version: '3.8'
 
 services:
   app:
+    #this tell to search for Dockerfile in the current folder
     build: .
+    #port to expose our app
     ports:
       - "3000:3000"
+    #required env's for our app
     environment:
       - URL=${URL}
       - JWT_SECRET=${JWT_SECRET}
@@ -16,13 +19,14 @@ services:
     networks:
       - student-app-network
 
+  #redis image to create our 2nd container
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
     networks:
       - student-app-network
-
+#network to link our 2 containers
 networks:
   student-app-network:
     driver: bridge
