@@ -1,9 +1,8 @@
-name: Build and Test Node js app with CI/CD Pipeline
-
+name: CI/CD Pipeline for Student Management API
 on: push
 
 jobs:
-  #Setting up Node js and running test cases
+  #Setting up Node js 
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -25,10 +24,6 @@ jobs:
     # Installing all dependencies 
       - name: Install Dependencies
         run: npm install
-
-    # Running mocha-chai test cases
-      - name: Run Test Cases
-        run: npm test
 
   docker-build-test:
     runs-on: ubuntu-latest
@@ -56,11 +51,15 @@ jobs:
 
     # Waiting for 10sec until the container is up running
       - name: Wait for Container to start
-        run: sleep 10
+        run: sleep 15
     
     #To check logs in case of failure
       - name: Show container logs
-        run: docker-compose logs || echo "Container exited"
+        run: docker-compose logs 
+
+    # Running mocha-chai test cases
+      - name: Run Test Cases inside the container
+        run: docker-compose exec app npm test
 
     # Calling the route to check if the application was deployed properly - Will get Error - "Invalid Credentials"
       - name: Curl health endpoint
@@ -69,5 +68,5 @@ jobs:
 
     # Removing container and image 
       - name: Stop and remove containers
-        run: |
-          docker-compose down
+        if: always() # This ensures cleanup happens even if a step fails
+        run: docker-compose down
