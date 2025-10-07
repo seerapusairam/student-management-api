@@ -3,19 +3,19 @@ info:
   title: Student Management API
   version: 1.0.0
   description: |
-    A RESTful API for managing students and users, built with Node.js, Express.js, and MongoDB.
+    A RESTful API for managing students and User, built with Node.js, Express.js, and MongoDB.
     Supports CRUD operations, authentication, filtering, sorting, and pagination.
 servers:
   - url: http://localhost:5001
 tags:
   - name: Students
     description: Operations related to student management
-  - name: Users
+  - name: User
     description: User registration and authentication
 paths:
-  /api/users/register:
+  /api/user/register:
     post:
-      tags: [Users]
+      tags: [User]
       summary: Register a new user
       requestBody:
         required: true
@@ -32,9 +32,9 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '400':
           description: Invalid input
-  /api/users/login:
+  /api/user/login:
     post:
-      tags: [Users]
+      tags: [User]
       summary: User login
       requestBody:
         required: true
