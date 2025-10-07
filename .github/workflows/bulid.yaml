@@ -44,12 +44,12 @@ jobs:
     
     # Building and running the docker-compose
       - name: Run docker-compose
-        run: |
-          export URL=${{ secrets.URL }}
-          export JWT_SECRET=${{ secrets.JWT_SECRET }}
-          export JWT_EXP=${{ secrets.JWT_EXP }}
-          export PORT=${{ secrets.PORT }}
-          docker-compose up -d --build
+        run: docker-compose up -d --build
+        env:
+          URL: ${{ secrets.URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXP: ${{ secrets.JWT_EXP }}
+          PORT: ${{ secrets.PORT }}
 
     # Waiting for 10sec until the container is up running
       - name: Wait for Container to start
